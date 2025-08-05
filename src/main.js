@@ -1,32 +1,57 @@
-//TIP With Search Everywhere, you can find any action, file, or symbol in your project. Press <shortcut actionId="Shift"/> <shortcut actionId="Shift"/>, type in <b>terminal</b>, and press <shortcut actionId="EditorEnter"/>. Then run <shortcut raw="npm run dev"/> in the terminal and click the link in its output to open the app in the browser.
-export function setupCounter(element) {
-  //TIP Try <shortcut actionId="GotoDeclaration"/> on <shortcut raw="counter"/> to see its usages. You can also use this shortcut to jump to a declaration – try it on <shortcut raw="counter"/> on line 13.
-  let counter = 0;
+function queensProblem(n){
+  let solucionActual = [];
+  let fila = 0
+  let caminosSinSolucion = [];
+  let soluciones = [];
 
-  const adjustCounterValue = value => {
-    if (value >= 100) return value - 100;
-    if (value <= -100) return value + 100;
-    return value;
-  };
+  while (true){
+    for (let columna = 0; columna < n; columna++){
+      if (isSave(fila, columna, solucionActual) && verificarCamino(columna, solucionActual, caminosSinSolucion)){
+        solucionActual.push(columna);
+        fila ++;
 
-  const setCounter = value => {
-    counter = adjustCounterValue(value);
-    //TIP WebStorm has lots of inspections to help you catch issues in your project. It also has quick fixes to help you resolve them. Press <shortcut actionId="ShowIntentionActions"/> on <shortcut raw="text"/> and choose <b>Inline variable</b> to clean up the redundant code.
-    const text = `${counter}`;
-    element.innerHTML = text;
-  };
+        if (solucionActual.length === n) {
+          soluciones.push([...solucionActual])
+          caminosSinSolucion.push([...solucionActual])
+          fila --;
+          solucionActual.pop();
+        }
 
-  document.getElementById('increaseByOne').addEventListener('click', () => setCounter(counter + 1));
-  document.getElementById('decreaseByOne').addEventListener('click', () => setCounter(counter - 1));
-  document.getElementById('increaseByTwo').addEventListener('click', () => setCounter(counter + 2));
-  //TIP In the app running in the browser, you’ll find that clicking <b>-2</b> doesn't work. To fix that, rewrite it using the code from lines 19 - 21 as examples of the logic.
-  document.getElementById('decreaseByTwo')
-
-  //TIP Let’s see how to review and commit your changes. Press <shortcut actionId="GotoAction"/> and look for <b>commit</b>. Try checking the diff for a file – double-click main.js to do that.
-  setCounter(0);
+        break;
+      }
+      if (columna === n - 1){
+        caminosSinSolucion.push([...solucionActual])
+        fila --;
+        solucionActual.pop();
+        if (fila === -1 ) return soluciones;
+      }
+    }
+  }
 }
 
-//TIP To find text strings in your project, you can use the <shortcut actionId="FindInPath"/> shortcut. Press it and type in <b>counter</b> – you’ll get all matches in one place.
-setupCounter(document.getElementById('counter-value'));
+function isSave(fila, columna, soluciones){
 
-//TIP There's much more in WebStorm to help you be more productive. Press <shortcut actionId="Shift"/> <shortcut actionId="Shift"/> and search for <b>Learn WebStorm</b> to open our learning hub with more things for you to try.
+  if (soluciones.length === 0 ) return true
+
+  for (const [filaSolucion, columnaSolucion] of soluciones.entries()) {
+    if(columnaSolucion === columna ||
+      Math.abs(fila - filaSolucion) === Math.abs(columna - columnaSolucion)) return false;
+  }
+  return true
+}
+
+function verificarCamino(columna, soluciones, caminosSinSolucion) {
+
+  if (caminosSinSolucion.length === 0) return true;
+
+  let solucionActual = [...soluciones, columna];
+
+  for (let camino of caminosSinSolucion){
+    if(JSON.stringify(camino) === JSON.stringify(solucionActual)) return false;
+  }
+
+  return true;
+}
+
+console.log(queensProblem(8))
+
