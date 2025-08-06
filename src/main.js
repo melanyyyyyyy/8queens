@@ -1,9 +1,9 @@
-function queensProblem(n){
-  let solucionActual = [];
-  let fila = 0
-  let caminosSinSolucion = [];
-  let soluciones = [];
+let solucionActual = [];
+let fila = 0
+let caminosSinSolucion = [];
+let soluciones = [];
 
+export function queensProblem(n){
   while (true){
     for (let columna = 0; columna < n; columna++){
       if (isSave(fila, columna, solucionActual) && verificarCamino(columna, solucionActual, caminosSinSolucion)){
@@ -15,15 +15,15 @@ function queensProblem(n){
           caminosSinSolucion.push([...solucionActual])
           fila --;
           solucionActual.pop();
+          return soluciones;
         }
-
         break;
       }
-      if (columna === n - 1){
+      else if (columna === n - 1){
         caminosSinSolucion.push([...solucionActual])
         fila --;
         solucionActual.pop();
-        if (fila === -1 ) return soluciones;
+        if (fila === -1 ) return null;
       }
     }
   }
@@ -53,5 +53,25 @@ function verificarCamino(columna, soluciones, caminosSinSolucion) {
   return true;
 }
 
-console.log(queensProblem(8))
-
+export const cantSoluciones = [
+  1,         // n = 1
+  0,         // n = 2
+  0,         // n = 3
+  2,         // n = 4
+  10,        // n = 5
+  4,         // n = 6
+  40,        // n = 7
+  92,        // n = 8
+  352,       // n = 9
+  724,       // n = 10
+  2680,      // n = 11
+  14200,     // n = 12
+  73712,     // n = 13
+  365596,    // n = 14
+  2279184,   // n = 15
+  14772512,  // n = 16
+  95815104,  // n = 17
+  666090624, // n = 18
+  4968057848,// n = 19
+  39029188884// n = 20
+];
